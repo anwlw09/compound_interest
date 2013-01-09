@@ -1,7 +1,7 @@
 *.o
 *.bak
-*.Debug
-*.Release
+*Debug
+*Release
 *.pdb
 temp
 debug
