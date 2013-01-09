@@ -1,0 +1,14 @@
+*.o
+*.bak
+*.Debug
+*.Release
+*.pdb
+temp
+debug
+release
+Makefile
+*.pro.user
+*.log
+ui_*.h
+moc_*.h
+moc_*.cpp
