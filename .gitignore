@@ -7,7 +7,7 @@ temp
 debug
 release
 Makefile
-*.pro.user
+*.pro.user*
 *.log
 ui_*.h
 moc_*.h
