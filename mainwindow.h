@@ -20,6 +20,10 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
+    float single_interest(float principal , int interest_rate , int interest_number );
+    float compound_interest(float principal , int interest_rate , int interest_number );
+    float append_single_interest(float principal , int interest_rate , int interest_number );
+    float append_compound_interest(float principal , int interest_rate , int interest_number );
 };
 
 #endif // MAINWINDOW_H
