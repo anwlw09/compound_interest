@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QString>
+#include <QMessageBox>
 
 namespace Ui {
 class MainWindow;
@@ -30,6 +31,8 @@ private:
     float compound_interest(float principal , int interest_rate , int interest_number );
     float append_single_interest(float principal , int interest_rate , int interest_number );
     float append_compound_interest(float principal , int interest_rate , int interest_number );
+    bool data_check();
+    QMessageBox* message;
 };
 
 #endif // MAINWINDOW_H

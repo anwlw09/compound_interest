@@ -7,6 +7,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     MainWindow::initialization_value();
+    message = new QMessageBox(this);
+    message->addButton(("OK"),QMessageBox::ActionRole);
 }
 
 MainWindow::~MainWindow()
@@ -22,7 +24,17 @@ void MainWindow::on_quit_clicked()
 
 void MainWindow::on_count_clicked()
 {
+    MainWindow::data_check();
+}
 
+//提示框函数
+void MainWindow::showMsg(QString info, QMessageBox::Icon lvl, bool modal)
+{
+    msg->setModal(modal);
+    msg->setWindowTitle(tr("Information"));
+    msg->setText(info);
+    msg->setIcon(lvl);
+    msg->setVisible(true);
 }
 
     //数据传入部分
@@ -37,6 +49,17 @@ void MainWindow::on_count_clicked()
         ui->account_mode->clear();
         ui->account_mode->addItems(account_mode);
         ui->account_mode->setCurrentIndex(0);
+    }
+
+    //数据合法性检查部分
+    bool MainWindow::data_check()
+    {
+        //现值（本金）不为负数
+        if (ui->present_value->text()<0)
+        {
+
+        }
+        return 1;
     }
 
 //运算部分
