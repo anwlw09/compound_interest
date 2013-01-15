@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QString>
 #include <QMessageBox>
+#include <QDoubleValidator>
 
 namespace Ui {
 class MainWindow;
@@ -23,6 +24,8 @@ public slots:
 private slots:
    void on_count_clicked();
 
+   void on_about_clicked();
+
 private:
     Ui::MainWindow *ui;
     void initialization_value();
@@ -32,7 +35,6 @@ private:
     float append_single_interest(float principal , int interest_rate , int interest_number );
     float append_compound_interest(float principal , int interest_rate , int interest_number );
     bool data_check();
-    QMessageBox* message;
 };
 
 #endif // MAINWINDOW_H

@@ -7,8 +7,6 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     MainWindow::initialization_value();
-    message = new QMessageBox(this);
-    message->addButton(("OK"),QMessageBox::ActionRole);
 }
 
 MainWindow::~MainWindow()
@@ -17,31 +15,36 @@ MainWindow::~MainWindow()
 }
 
 //控制部分
-void MainWindow::on_quit_clicked()
-{
-    close();
-}
-
+//计算
 void MainWindow::on_count_clicked()
 {
     MainWindow::data_check();
 }
 
-//提示框函数
-void MainWindow::showMsg(QString info, QMessageBox::Icon lvl, bool modal)
+void MainWindow::on_about_clicked()
 {
-    msg->setModal(modal);
-    msg->setWindowTitle(tr("Information"));
-    msg->setText(info);
-    msg->setIcon(lvl);
-    msg->setVisible(true);
+    QMessageBox::about( NULL , "关于" , " copyright (c) anwlw09 since 2013 ") ;
 }
+
+//退出
+void MainWindow::on_quit_clicked()
+{
+    close();
+}
+
 
     //数据传入部分
     //初始化界面数据
     void MainWindow::initialization_value()
     {
         //初始化计算模式
+        QStringList interest_period_unit;
+        interest_period_unit.clear();
+        interest_period_unit<<"年"<<"月"<<"日";
+        ui->interest_period_unit->clear();
+        ui->interest_period_unit->addItems(interest_period_unit);
+        ui->interest_period_unit->setCurrentIndex(0);
+
         QStringList account_mode;
         account_mode.clear();
         account_mode<<"单次投资单利计算利息"<<"单次投资复利计算利息"
@@ -49,18 +52,42 @@ void MainWindow::showMsg(QString info, QMessageBox::Icon lvl, bool modal)
         ui->account_mode->clear();
         ui->account_mode->addItems(account_mode);
         ui->account_mode->setCurrentIndex(0);
+
+        //控制输入范围
+        QDoubleValidator* present_value_validator = new QDoubleValidator ;
+        present_value_validator->setRange(0 , 100000000.0 , 2 );
+        ui->present_value->setValidator(present_value_validator);
+
+        QIntValidator* interest_rate_validator = new QIntValidator ;
+        interest_rate_validator->setRange(0 , 99 );
+        ui->interest_rate->setValidator(interest_rate_validator);
+
+        QIntValidator* interest_period_validator = new QIntValidator ;
+        interest_period_validator->setRange(0 , 999 );
+        ui->interest_period->setValidator(interest_period_validator);
+
+        QIntValidator* time_period_validator = new QIntValidator ;
+        time_period_validator->setRange(0,999);
+        ui->time_period->setValidator(time_period_validator);
     }
 
     //数据合法性检查部分
     bool MainWindow::data_check()
     {
-        //现值（本金）不为负数
-        if (ui->present_value->text()<0)
+        if ( ui->present_value->displayText().toFloat() > 100000000. )
         {
-
+            QMessageBox::information( NULL , "钱太多了" , "钱太多装不下了！" , QMessageBox::Ok , QMessageBox::Ok ) ;
+            return 0 ;
         }
-        return 1;
+        if ( ui->interest_period_unit->currentText().operator ==("年") && ui->interest_period->displayText().toInt() > 1 )
+        {
+            QMessageBox::information( NULL , "太久不给利息了！" , "郁闷，一年都不给利息，人都快饿死了啊" , QMessageBox::Ok , QMessageBox::Ok ) ;
+            return 0 ;
+        }
+
+        return 1 ;
     }
+
 
 //运算部分
 float MainWindow::single_interest(float present_value , short int interest_rate , short int interest_period ,

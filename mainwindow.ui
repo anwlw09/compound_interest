@@ -19,12 +19,12 @@
      <rect>
       <x>340</x>
       <y>20</y>
-      <width>141</width>
+      <width>171</width>
       <height>31</height>
      </rect>
     </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;投资收益计算器&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt; font-weight:600;&quot;&gt;投资收益计算器&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -82,7 +82,7 @@
       <widget class="QLineEdit" name="present_value">
        <property name="maximumSize">
         <size>
-         <width>60</width>
+         <width>80</width>
          <height>16777215</height>
         </size>
        </property>
@@ -148,7 +148,7 @@
       <widget class="QLineEdit" name="interest_period">
        <property name="maximumSize">
         <size>
-         <width>20</width>
+         <width>30</width>
          <height>16777215</height>
         </size>
        </property>
@@ -158,7 +158,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="comboBox_2">
+      <widget class="QComboBox" name="interest_period_unit">
        <property name="maximumSize">
         <size>
          <width>35</width>
@@ -199,7 +199,7 @@
       <widget class="QLineEdit" name="time_period">
        <property name="maximumSize">
         <size>
-         <width>20</width>
+         <width>30</width>
          <height>16777215</height>
         </size>
        </property>
@@ -209,7 +209,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="comboBox">
+      <widget class="QComboBox" name="time_period_unit">
        <property name="maximumSize">
         <size>
          <width>35</width>
@@ -244,7 +244,7 @@
       <widget class="QLineEdit" name="future_value">
        <property name="maximumSize">
         <size>
-         <width>60</width>
+         <width>80</width>
          <height>16777215</height>
         </size>
        </property>
@@ -350,7 +350,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="append_value">
+      <widget class="QLineEdit" name="automatic_investment_plan_value">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -359,7 +359,7 @@
        </property>
        <property name="maximumSize">
         <size>
-         <width>60</width>
+         <width>80</width>
          <height>16777215</height>
         </size>
        </property>
@@ -389,7 +389,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="time_period_2">
+      <widget class="QLineEdit" name="automatic_investment_plan_period">
        <property name="maximumSize">
         <size>
          <width>20</width>
