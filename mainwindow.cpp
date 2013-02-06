@@ -19,11 +19,12 @@ MainWindow::~MainWindow()
 void MainWindow::on_count_clicked()
 {
     MainWindow::data_check();
+//    MainWindow::data_count();
 }
 
 void MainWindow::on_about_clicked()
 {
-    QMessageBox::about( NULL , "关于" , " copyright (c) anwlw09 since 2013 ") ;
+    QMessageBox::about( NULL , tr("About") , tr(" Copyright (c) anwlw09 since 2013 ")) ;
 }
 
 //退出
@@ -40,18 +41,25 @@ void MainWindow::on_quit_clicked()
         //初始化计算模式
         QStringList interest_period_unit;
         interest_period_unit.clear();
-        interest_period_unit<<"年"<<"月"<<"日";
+        interest_period_unit<<tr("year")<<tr("month")<<tr("day");
         ui->interest_period_unit->clear();
         ui->interest_period_unit->addItems(interest_period_unit);
         ui->interest_period_unit->setCurrentIndex(0);
 
-        QStringList account_mode;
-        account_mode.clear();
-        account_mode<<"单次投资单利计算利息"<<"单次投资复利计算利息"
-                   <<"定期投资单利计算利息"<<"定期投资复利计算利息";
-        ui->account_mode->clear();
-        ui->account_mode->addItems(account_mode);
-        ui->account_mode->setCurrentIndex(0);
+        QStringList invest_period_unit;
+        invest_period_unit.clear();
+        invest_period_unit<<tr("year")<<tr("month")<<tr("day");
+        ui->invest_period_unit->clear();
+        ui->invest_period_unit->addItems(invest_period_unit);
+        ui->invest_period_unit->setCurrentIndex(0);
+
+        QStringList count_mode;
+        count_mode.clear();
+        count_mode<<tr("one time single interest")<<tr("one time compound interest")
+                   <<tr("automatic investment plan single interest")<<tr("automatic investment plan compound interest");
+        ui->count_mode->clear();
+        ui->count_mode->addItems(count_mode);
+        ui->count_mode->setCurrentIndex(0);
 
         //控制输入范围
         QDoubleValidator* present_value_validator = new QDoubleValidator ;
@@ -66,9 +74,9 @@ void MainWindow::on_quit_clicked()
         interest_period_validator->setRange(0 , 999 );
         ui->interest_period->setValidator(interest_period_validator);
 
-        QIntValidator* time_period_validator = new QIntValidator ;
-        time_period_validator->setRange(0,999);
-        ui->time_period->setValidator(time_period_validator);
+        QIntValidator* invest_period_validator = new QIntValidator ;
+        invest_period_validator->setRange(0,999);
+        ui->invest_period->setValidator(invest_period_validator);
     }
 
     //数据合法性检查部分
@@ -76,12 +84,12 @@ void MainWindow::on_quit_clicked()
     {
         if ( ui->present_value->displayText().toFloat() > 100000000. )
         {
-            QMessageBox::information( NULL , "钱太多了" , "钱太多装不下了！" , QMessageBox::Ok , QMessageBox::Ok ) ;
+            QMessageBox::information( NULL , tr("money is too much") , tr("too much money can't be take") , QMessageBox::Ok , QMessageBox::Ok ) ;
             return 0 ;
         }
-        if ( ui->interest_period_unit->currentText().operator ==("年") && ui->interest_period->displayText().toInt() > 1 )
+        if ( ui->interest_period_unit->currentText().operator ==("year") && ui->interest_period->displayText().toInt() > 1 )
         {
-            QMessageBox::information( NULL , "太久不给利息了！" , "郁闷，一年都不给利息，人都快饿死了啊" , QMessageBox::Ok , QMessageBox::Ok ) ;
+            QMessageBox::information( NULL , tr("too later") , tr("so sad , no interest more than 1 year") , QMessageBox::Ok , QMessageBox::Ok ) ;
             return 0 ;
         }
 
@@ -90,27 +98,37 @@ void MainWindow::on_quit_clicked()
 
 
 //运算部分
-float MainWindow::single_interest(float present_value , short int interest_rate , short int interest_period ,
-                                  short int interest_period_unit , short int time_period , short int time_period_unit)
+//数据整理部分
+
+
+//计算公式部分
+float MainWindow::data_count(unsigned char count_mode, float present_value, short interest_rate, short invest_period,
+                             float automatic_investment_plan_value, float automatic_investment_plan_period )
 {
-    float final_value = present_value * ( interest_rate * interest_period / interest_period_unit) * time_period / time_period_unit ;
-    return final_value ;
+    float final_value=0 , temp = 0 ;
+    switch ( count_mode )
+    {
+    case 1 :
+        final_value = present_value * interest_rate * invest_period ;
+        return final_value ;
+        break ;
+    case 2 :
+        final_value = present_value * pow( ( 1 + interest_rate ) , invest_period ) ;
+        return final_value ;
+        break ;
+    case 3 :
+        final_value = automatic_investment_plan_value * ( 1 * automatic_investment_plan_period + interest_rate * automatic_investment_plan_period *
+                                                                ( automatic_investment_plan_period + 1 ) / 2 ) ;
+        return final_value ;
+        break ;
+    case 4 :
+        for ( ;automatic_investment_plan_period>0 ;automatic_investment_plan_period-- )
+        {
+            temp = pow ( ( 1 + interest_rate ) , automatic_investment_plan_period ) ;
+            final_value = final_value + temp ;
+            temp = 0 ;
+        }
+    }
 }
 
-//float MainWindow::compound_interest(float present_value , int interest_rate , int interest_number )
-//{
-
-//}
-
-//float MainWindow::append_single_interest(float present_value , int interest_rate , int interest_number )
-//{
-
-//}
-
-//float MainWindow::append_compound_interest(float present_value , int interest_rate , int interest_number )
-//{
-
-//}
-
     //数据传出部分
-

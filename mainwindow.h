@@ -5,6 +5,8 @@
 #include <QString>
 #include <QMessageBox>
 #include <QDoubleValidator>
+#include <QTranslator>
+#include <qmath.h>
 
 namespace Ui {
 class MainWindow;
@@ -29,11 +31,8 @@ private slots:
 private:
     Ui::MainWindow *ui;
     void initialization_value();
-    float single_interest(float present_value , short int interest_rate , short int interest_period ,
-                          short int interest_period_unit , short int time_period , short int time_period_unit);
-    float compound_interest(float principal , int interest_rate , int interest_number );
-    float append_single_interest(float principal , int interest_rate , int interest_number );
-    float append_compound_interest(float principal , int interest_rate , int interest_number );
+    float data_count(unsigned char count_mode, float present_value, short interest_rate, short invest_period,
+                                 float automatic_investment_plan_value, float automatic_investment_plan_period );
     bool data_check();
 };
 

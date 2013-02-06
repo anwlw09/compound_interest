@@ -196,7 +196,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="time_period">
+      <widget class="QLineEdit" name="invest_period">
        <property name="maximumSize">
         <size>
          <width>30</width>
@@ -209,7 +209,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="time_period_unit">
+      <widget class="QComboBox" name="invest_period_unit">
        <property name="maximumSize">
         <size>
          <width>35</width>
@@ -268,7 +268,7 @@
       <x>120</x>
       <y>200</y>
       <width>601</width>
-      <height>31</height>
+      <height>32</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -440,7 +440,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="account_mode">
+      <widget class="QComboBox" name="count_mode">
        <property name="minimumSize">
         <size>
          <width>120</width>
