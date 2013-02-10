@@ -107,7 +107,7 @@
         </size>
        </property>
        <property name="text">
-        <string>年利率</string>
+        <string>利率</string>
        </property>
       </widget>
      </item>

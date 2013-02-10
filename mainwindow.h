@@ -33,7 +33,9 @@ private:
     void initialization_value();
     bool data_check();
 
-    float present_value_manage(QString present_value);
+    float present_value_trim(QString present_value);
+    float interest_rate_trim();
+    float invest_period_trim();
     unsigned char count_mode_trim(QString count_mode);
     float data_count(unsigned char count_mode, float present_value, short interest_rate, short invest_period,
                                  float automatic_investment_plan_value, float automatic_investment_plan_period );

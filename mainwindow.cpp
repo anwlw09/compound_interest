@@ -19,7 +19,12 @@ MainWindow::~MainWindow()
 void MainWindow::on_count_clicked()
 {
     MainWindow::data_check();
-//    MainWindow::data_count();
+    QString final_value;
+    final_value.setNum(MainWindow::data_count(MainWindow::count_mode_trim(ui->count_mode->currentText()),
+                                                         MainWindow::present_value_trim(ui->present_value->text()),
+                                                         MainWindow::interest_rate_trim(), MainWindow::invest_period_trim(), 0, 0 ),
+                                  'g', 6 );
+    ui->final_value->setText(final_value);
 }
 
 void MainWindow::on_about_clicked()
@@ -135,9 +140,41 @@ void MainWindow::on_quit_clicked()
 //运算部分
 //数据整理部分
 
-float MainWindow::present_value_manage(QString present_value)
+float MainWindow::present_value_trim(QString present_value)
 {
     return present_value.toFloat();
+}
+
+float MainWindow::interest_rate_trim()
+{
+    if (ui->interest_period_unit->currentText().operator ==("day"))
+    {
+        return ui->interest_rate->text().toFloat()/ui->interest_period->text().toFloat()*365/100 ;
+    }
+    else if (ui->interest_period_unit->currentText().operator ==("month"))
+    {
+        return ui->interest_rate->text().toFloat()/ui->interest_period->text().toFloat()*12/100 ;
+    }
+    else
+    {
+        return ui->interest_rate->text().toFloat()/ui->interest_period->text().toFloat()*1/100 ;
+    }
+}
+
+float MainWindow::invest_period_trim()
+{
+    if (ui->invest_period_unit->currentText().operator ==("day"))
+    {
+        return ui->invest_period->text().toFloat()/365 ;
+    }
+    else if (ui->invest_period_unit->currentText().operator ==("month"))
+    {
+        return ui->invest_period->text().toFloat()/12 ;
+    }
+    else
+    {
+        return ui->invest_period->text().toFloat()/1 ;
+    }
 }
 
 unsigned char MainWindow::count_mode_trim(QString count_mode)
@@ -158,7 +195,7 @@ float MainWindow::data_count(unsigned char count_mode, float present_value, shor
     switch ( count_mode )
     {
     case 1 :
-        final_value = present_value * interest_rate * invest_period ;
+        final_value = present_value * (1 + interest_rate ) * invest_period ;
         return final_value ;
         break ;
     case 2 :
