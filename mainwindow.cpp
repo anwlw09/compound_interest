@@ -39,6 +39,18 @@ void MainWindow::on_quit_clicked()
     void MainWindow::initialization_value()
     {
         //初始化计算模式
+        QString present_value;
+        present_value = "10000.00";
+        ui->present_value->setText(present_value);
+
+        QString interest_rate;
+        interest_rate = "5";
+        ui->interest_rate->setText(interest_rate);
+
+        QString interest_period;
+        interest_period = "1";
+        ui->interest_period->setText(interest_period);
+
         QStringList interest_period_unit;
         interest_period_unit.clear();
         interest_period_unit<<tr("year")<<tr("month")<<tr("day");
@@ -46,12 +58,35 @@ void MainWindow::on_quit_clicked()
         ui->interest_period_unit->addItems(interest_period_unit);
         ui->interest_period_unit->setCurrentIndex(0);
 
+        QString invest_period;
+        invest_period = "1";
+        ui->invest_period->setText(invest_period);
+
         QStringList invest_period_unit;
         invest_period_unit.clear();
         invest_period_unit<<tr("year")<<tr("month")<<tr("day");
         ui->invest_period_unit->clear();
         ui->invest_period_unit->addItems(invest_period_unit);
         ui->invest_period_unit->setCurrentIndex(0);
+
+        QString final_value;
+        final_value = "0";
+        ui->final_value->setText(final_value);
+
+        QString automatic_investment_plan_value;
+        automatic_investment_plan_value = "10000.00";
+        ui->automatic_investment_plan_value->setText(automatic_investment_plan_value);
+
+        QString automatic_investment_plan_period;
+        automatic_investment_plan_period = "20";
+        ui->automatic_investment_plan_period->setText(automatic_investment_plan_period);
+
+        QStringList automatic_investment_plan_period_unit;
+        automatic_investment_plan_period_unit.clear();
+        automatic_investment_plan_period_unit<<tr("year")<<tr("month")<<tr("day");
+        ui->automatic_investment_plan_period_unit->clear();
+        ui->automatic_investment_plan_period_unit->addItems(automatic_investment_plan_period_unit);
+        ui->automatic_investment_plan_period_unit->setCurrentIndex(0);
 
         QStringList count_mode;
         count_mode.clear();
@@ -100,6 +135,20 @@ void MainWindow::on_quit_clicked()
 //运算部分
 //数据整理部分
 
+float MainWindow::present_value_manage(QString present_value)
+{
+    return present_value.toFloat();
+}
+
+unsigned char MainWindow::count_mode_trim(QString count_mode)
+{
+    if (count_mode == "one time single interest"){return 1;}
+    else if (count_mode == "one time compound interest"){return 2;}
+    else if (count_mode == "automatic investment plan single interest"){return 3;}
+    else if (count_mode == "automatic investment plan compound interest"){return 4;}
+    return 0;
+}
+
 
 //计算公式部分
 float MainWindow::data_count(unsigned char count_mode, float present_value, short interest_rate, short invest_period,
@@ -128,6 +177,10 @@ float MainWindow::data_count(unsigned char count_mode, float present_value, shor
             final_value = final_value + temp ;
             temp = 0 ;
         }
+        return final_value ;
+        break ;
+    default :
+        return 0 ;
     }
 }
 
