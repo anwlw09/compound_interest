@@ -18,13 +18,13 @@ MainWindow::~MainWindow()
 //计算
 void MainWindow::on_count_clicked()
 {
-    MainWindow::data_check();
-    QString final_value;
-    final_value.setNum(MainWindow::data_count(MainWindow::count_mode_trim(ui->count_mode->currentText()),
-                                                         MainWindow::present_value_trim(ui->present_value->text()),
-                                                         MainWindow::interest_rate_trim(), MainWindow::invest_period_trim(), 0, 0 ),
-                                  'g', 6 );
-    ui->final_value->setText(final_value);
+    data_check();
+    unsigned char count_mode = count_mode_trim(ui->count_mode->currentText());
+    float present_value = present_value_trim(ui->present_value->text());
+    float interest_rate = interest_rate_trim();
+    float invest_period = invest_period_trim();
+    float final_value = data_count(count_mode,present_value,interest_rate,invest_period,0.0,0.0);
+    data_show(final_value);
 }
 
 void MainWindow::on_about_clicked()
@@ -103,7 +103,7 @@ void MainWindow::on_quit_clicked()
 
         //控制输入范围
         QDoubleValidator* present_value_validator = new QDoubleValidator ;
-        present_value_validator->setRange(0 , 100000000.0 , 2 );
+        present_value_validator->setRange(0.0 , 100000000.0 , 2 );
         ui->present_value->setValidator(present_value_validator);
 
         QIntValidator* interest_rate_validator = new QIntValidator ;
@@ -122,14 +122,16 @@ void MainWindow::on_quit_clicked()
     //数据合法性检查部分
     bool MainWindow::data_check()
     {
-        if ( ui->present_value->displayText().toFloat() > 100000000. )
+        if ( ui->present_value->displayText().toFloat() > 100000000.0 )
         {
-            QMessageBox::information( NULL , tr("money is too much") , tr("too much money can't be take") , QMessageBox::Ok , QMessageBox::Ok ) ;
+            QMessageBox::information( NULL , tr("money is too much") , tr("too much money can't be take") ,
+                                      QMessageBox::Ok , QMessageBox::Ok ) ;
             return 0 ;
         }
         if ( ui->interest_period_unit->currentText().operator ==("year") && ui->interest_period->displayText().toInt() > 1 )
         {
-            QMessageBox::information( NULL , tr("too later") , tr("so sad , no interest more than 1 year") , QMessageBox::Ok , QMessageBox::Ok ) ;
+            QMessageBox::information( NULL , tr("too later") , tr("so sad , no interest more than 1 year") ,
+                                      QMessageBox::Ok , QMessageBox::Ok ) ;
             return 0 ;
         }
 
@@ -149,15 +151,15 @@ float MainWindow::interest_rate_trim()
 {
     if (ui->interest_period_unit->currentText().operator ==("day"))
     {
-        return ui->interest_rate->text().toFloat()/ui->interest_period->text().toFloat()*365/100 ;
+        return ui->interest_rate->text().toShort()/(ui->interest_period->text().toShort()*365.0)/100.0 ;
     }
     else if (ui->interest_period_unit->currentText().operator ==("month"))
     {
-        return ui->interest_rate->text().toFloat()/ui->interest_period->text().toFloat()*12/100 ;
+        return ui->interest_rate->text().toShort()/(ui->interest_period->text().toShort()*12.0)/100.0 ;
     }
     else
     {
-        return ui->interest_rate->text().toFloat()/ui->interest_period->text().toFloat()*1/100 ;
+        return ui->interest_rate->text().toShort()/(ui->interest_period->text().toShort()*1.0)/100.0 ;
     }
 }
 
@@ -165,15 +167,15 @@ float MainWindow::invest_period_trim()
 {
     if (ui->invest_period_unit->currentText().operator ==("day"))
     {
-        return ui->invest_period->text().toFloat()/365 ;
+        return ui->invest_period->text().toShort()/365.0 ;
     }
     else if (ui->invest_period_unit->currentText().operator ==("month"))
     {
-        return ui->invest_period->text().toFloat()/12 ;
+        return ui->invest_period->text().toShort()/12.0 ;
     }
     else
     {
-        return ui->invest_period->text().toFloat()/1 ;
+        return ui->invest_period->text().toShort()/1.0 ;
     }
 }
 
@@ -186,16 +188,15 @@ unsigned char MainWindow::count_mode_trim(QString count_mode)
     return 0;
 }
 
-
 //计算公式部分
-float MainWindow::data_count(unsigned char count_mode, float present_value, short interest_rate, short invest_period,
+float MainWindow::data_count(unsigned char count_mode, float present_value, float interest_rate, float invest_period,
                              float automatic_investment_plan_value, float automatic_investment_plan_period )
 {
     float final_value=0 , temp = 0 ;
     switch ( count_mode )
     {
     case 1 :
-        final_value = present_value * (1 + interest_rate ) * invest_period ;
+        final_value = present_value * (1 + interest_rate * invest_period ) ;
         return final_value ;
         break ;
     case 2 :
@@ -203,8 +204,9 @@ float MainWindow::data_count(unsigned char count_mode, float present_value, shor
         return final_value ;
         break ;
     case 3 :
-        final_value = automatic_investment_plan_value * ( 1 * automatic_investment_plan_period + interest_rate * automatic_investment_plan_period *
-                                                                ( automatic_investment_plan_period + 1 ) / 2 ) ;
+        final_value = automatic_investment_plan_value * ( 1 * automatic_investment_plan_period + interest_rate *
+                                                          automatic_investment_plan_period *
+                                                          ( automatic_investment_plan_period + 1 ) / 2 ) ;
         return final_value ;
         break ;
     case 4 :
@@ -222,3 +224,9 @@ float MainWindow::data_count(unsigned char count_mode, float present_value, shor
 }
 
     //数据传出部分
+    void MainWindow::data_show(float final_value_input)
+    {
+        QString final_value;
+        final_value.setNum(final_value_input,'g',6);
+        ui->final_value->setText(final_value);
+    }

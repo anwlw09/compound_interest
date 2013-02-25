@@ -37,8 +37,9 @@ private:
     float interest_rate_trim();
     float invest_period_trim();
     unsigned char count_mode_trim(QString count_mode);
-    float data_count(unsigned char count_mode, float present_value, short interest_rate, short invest_period,
-                                 float automatic_investment_plan_value, float automatic_investment_plan_period );
+    float data_count(unsigned char count_mode, float present_value, float interest_rate, float invest_period,
+                     float automatic_investment_plan_value, float automatic_investment_plan_period );
+    void data_show(float final_value);
 };
 
 #endif // MAINWINDOW_H
