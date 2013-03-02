@@ -36,6 +36,9 @@ private:
     float present_value_trim(QString present_value);
     float interest_rate_trim();
     float invest_period_trim();
+    float automatic_investment_plan_value_trim(QString automatic_investment_plan_value);
+    float automatic_investment_plan_period_trim(QString automatic_investment_plan_period,
+                                                QString automatic_investment_plan_period_unit);
     unsigned char count_mode_trim(QString count_mode);
     float data_count(unsigned char count_mode, float present_value, float interest_rate, float invest_period,
                      float automatic_investment_plan_value, float automatic_investment_plan_period );

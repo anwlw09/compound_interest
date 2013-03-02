@@ -23,7 +23,11 @@ void MainWindow::on_count_clicked()
     float present_value = present_value_trim(ui->present_value->text());
     float interest_rate = interest_rate_trim();
     float invest_period = invest_period_trim();
-    float final_value = data_count(count_mode,present_value,interest_rate,invest_period,0.0,0.0);
+    float automatic_investment_plan_value = automatic_investment_plan_value_trim(ui->automatic_investment_plan_value->text());
+    float automatic_investment_plan_period = automatic_investment_plan_period_trim(ui->automatic_investment_plan_period->text(),
+                                                                                   ui->automatic_investment_plan_period_unit->currentText());
+    float final_value = data_count(count_mode,present_value,interest_rate,invest_period,
+                                   automatic_investment_plan_value,automatic_investment_plan_period );
     data_show(final_value);
 }
 
@@ -179,6 +183,28 @@ float MainWindow::invest_period_trim()
     }
 }
 
+float MainWindow::automatic_investment_plan_value_trim(QString automatic_investment_plan_value)
+{
+    return automatic_investment_plan_value.toFloat();
+}
+
+float MainWindow::automatic_investment_plan_period_trim(QString automatic_investment_plan_period,
+                                                        QString automatic_investment_plan_period_unit)
+{
+    if (automatic_investment_plan_period_unit== "day")
+    {
+        return automatic_investment_plan_period.toShort()/365.0 ;
+    }
+    else if (automatic_investment_plan_period_unit== "month")
+    {
+        return automatic_investment_plan_period.toShort()/12.0 ;
+    }
+    else
+    {
+        return automatic_investment_plan_period.toShort()/1.0 ;
+    }
+}
+
 unsigned char MainWindow::count_mode_trim(QString count_mode)
 {
     if (count_mode == "one time single interest"){return 1;}
@@ -196,23 +222,23 @@ float MainWindow::data_count(unsigned char count_mode, float present_value, floa
     switch ( count_mode )
     {
     case 1 :
-        final_value = present_value * (1 + interest_rate * invest_period ) ;
+        final_value = present_value * (1.0 + interest_rate * invest_period ) ;
         return final_value ;
         break ;
     case 2 :
-        final_value = present_value * pow( ( 1 + interest_rate ) , invest_period ) ;
+        final_value = present_value * pow( ( 1.0 + interest_rate ) , invest_period ) ;
         return final_value ;
         break ;
     case 3 :
-        final_value = automatic_investment_plan_value * ( 1 * automatic_investment_plan_period + interest_rate *
+        final_value = automatic_investment_plan_value * ( 1.0 * automatic_investment_plan_period + interest_rate *
                                                           automatic_investment_plan_period *
-                                                          ( automatic_investment_plan_period + 1 ) / 2 ) ;
+                                                          ( automatic_investment_plan_period + 1.0 ) / 2.0 ) ;
         return final_value ;
         break ;
     case 4 :
         for ( ;automatic_investment_plan_period>0 ;automatic_investment_plan_period-- )
         {
-            temp = pow ( ( 1 + interest_rate ) , automatic_investment_plan_period ) ;
+            temp = automatic_investment_plan_value * pow ( ( 1.0 + interest_rate ) , automatic_investment_plan_period ) ;
             final_value = final_value + temp ;
             temp = 0 ;
         }
