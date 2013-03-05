@@ -14,8 +14,8 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-//控制部分
-//计算
+//the part of control 控制部分
+//count button 计算
 void MainWindow::on_count_clicked()
 {
     data_check();
@@ -36,18 +36,17 @@ void MainWindow::on_about_clicked()
     QMessageBox::about( NULL , tr("About") , tr(" Copyright (c) anwlw09 since 2013 ")) ;
 }
 
-//退出
+//quit button 退出
 void MainWindow::on_quit_clicked()
 {
     close();
 }
 
 
-    //数据传入部分
-    //初始化界面数据
+    //the part of data introduction 数据传入部分
+    //initialization the value on the interface 初始化界面数据
     void MainWindow::initialization_value()
     {
-        //初始化计算模式
         QString present_value;
         present_value = "10000.00";
         ui->present_value->setText(present_value);
@@ -97,6 +96,7 @@ void MainWindow::on_quit_clicked()
         ui->automatic_investment_plan_period_unit->addItems(automatic_investment_plan_period_unit);
         ui->automatic_investment_plan_period_unit->setCurrentIndex(0);
 
+        //initialization count mode 初始化计算模式
         QStringList count_mode;
         count_mode.clear();
         count_mode<<tr("one time single interest")<<tr("one time compound interest")
@@ -105,7 +105,7 @@ void MainWindow::on_quit_clicked()
         ui->count_mode->addItems(count_mode);
         ui->count_mode->setCurrentIndex(0);
 
-        //控制输入范围
+        //limit the range of the input value 控制输入范围
         QDoubleValidator* present_value_validator = new QDoubleValidator ;
         present_value_validator->setRange(0.0 , 100000000.0 , 2 );
         ui->present_value->setValidator(present_value_validator);
@@ -123,7 +123,7 @@ void MainWindow::on_quit_clicked()
         ui->invest_period->setValidator(invest_period_validator);
     }
 
-    //数据合法性检查部分
+    //the part of check validity for the data 数据合法性检查部分
     bool MainWindow::data_check()
     {
         if ( ui->present_value->displayText().toFloat() > 100000000.0 )
@@ -134,7 +134,7 @@ void MainWindow::on_quit_clicked()
         }
         if ( ui->interest_period_unit->currentText().operator ==("year") && ui->interest_period->displayText().toInt() > 1 )
         {
-            QMessageBox::information( NULL , tr("too later") , tr("so sad , no interest more than 1 year") ,
+            QMessageBox::information( NULL , tr("long time") , tr("so sad , no interest more than 1 year") ,
                                       QMessageBox::Ok , QMessageBox::Ok ) ;
             return 0 ;
         }
@@ -143,8 +143,8 @@ void MainWindow::on_quit_clicked()
     }
 
 
-//运算部分
-//数据整理部分
+//the part of count 运算部分
+//the part of trim the data 数据整理部分
 
 float MainWindow::present_value_trim(QString present_value)
 {
@@ -214,7 +214,7 @@ unsigned char MainWindow::count_mode_trim(QString count_mode)
     return 0;
 }
 
-//计算公式部分
+//the part of the function of count 计算公式部分
 float MainWindow::data_count(unsigned char count_mode, float present_value, float interest_rate, float invest_period,
                              float automatic_investment_plan_value, float automatic_investment_plan_period )
 {
@@ -249,7 +249,7 @@ float MainWindow::data_count(unsigned char count_mode, float present_value, floa
     }
 }
 
-    //数据传出部分
+    //the part of output the data 数据传出部分
     void MainWindow::data_show(float final_value_input)
     {
         QString final_value;
