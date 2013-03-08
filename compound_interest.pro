@@ -20,3 +20,8 @@ HEADERS  += mainwindow.h
 FORMS    += mainwindow.ui
 
 TRANSLATIONS += compound_interest.ts
+
+OTHER_FILES +=
+
+RESOURCES += \
+    mainrc.qrc

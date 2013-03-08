@@ -7,6 +7,7 @@
 #include <QDoubleValidator>
 #include <QTranslator>
 #include <qmath.h>
+#include <QDebug>
 
 namespace Ui {
 class MainWindow;
@@ -40,7 +41,7 @@ private:
     float automatic_investment_plan_period_trim(QString automatic_investment_plan_period,
                                                 QString automatic_investment_plan_period_unit);
     unsigned char count_mode_trim(QString count_mode);
-    float data_count(unsigned char count_mode, float present_value, float interest_rate, float invest_period,
+    float data_count(int count_mode, float present_value, float interest_rate, float invest_period,
                      float automatic_investment_plan_value, float automatic_investment_plan_period );
     void data_show(float final_value);
 };

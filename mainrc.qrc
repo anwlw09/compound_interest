@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>compound_interest.qm</file>
+    </qresource>
+</RCC>

@@ -19,14 +19,13 @@ MainWindow::~MainWindow()
 void MainWindow::on_count_clicked()
 {
     data_check();
-    unsigned char count_mode = count_mode_trim(ui->count_mode->currentText());
     float present_value = present_value_trim(ui->present_value->text());
     float interest_rate = interest_rate_trim();
     float invest_period = invest_period_trim();
     float automatic_investment_plan_value = automatic_investment_plan_value_trim(ui->automatic_investment_plan_value->text());
     float automatic_investment_plan_period = automatic_investment_plan_period_trim(ui->automatic_investment_plan_period->text(),
                                                                                    ui->automatic_investment_plan_period_unit->currentText());
-    float final_value = data_count(count_mode,present_value,interest_rate,invest_period,
+    float final_value = data_count(ui->count_mode->currentIndex(),present_value,interest_rate,invest_period,
                                    automatic_investment_plan_value,automatic_investment_plan_period );
     data_show(final_value);
 }
@@ -132,7 +131,7 @@ void MainWindow::on_quit_clicked()
                                       QMessageBox::Ok , QMessageBox::Ok ) ;
             return 0 ;
         }
-        if ( ui->interest_period_unit->currentText().operator ==("year") && ui->interest_period->displayText().toInt() > 1 )
+        if ( ui->interest_period_unit->currentIndex() == 0 && ui->interest_period->displayText().toInt() > 1 )
         {
             QMessageBox::information( NULL , tr("long time") , tr("so sad , no interest more than 1 year") ,
                                       QMessageBox::Ok , QMessageBox::Ok ) ;
@@ -153,11 +152,11 @@ float MainWindow::present_value_trim(QString present_value)
 
 float MainWindow::interest_rate_trim()
 {
-    if (ui->interest_period_unit->currentText().operator ==("day"))
+    if (ui->interest_period_unit->currentIndex() == 2)
     {
         return ui->interest_rate->text().toShort()/(ui->interest_period->text().toShort()*365.0)/100.0 ;
     }
-    else if (ui->interest_period_unit->currentText().operator ==("month"))
+    else if (ui->interest_period_unit->currentIndex() == 1)
     {
         return ui->interest_rate->text().toShort()/(ui->interest_period->text().toShort()*12.0)/100.0 ;
     }
@@ -169,11 +168,11 @@ float MainWindow::interest_rate_trim()
 
 float MainWindow::invest_period_trim()
 {
-    if (ui->invest_period_unit->currentText().operator ==("day"))
+    if (ui->invest_period_unit->currentIndex() == 2)
     {
         return ui->invest_period->text().toShort()/365.0 ;
     }
-    else if (ui->invest_period_unit->currentText().operator ==("month"))
+    else if (ui->invest_period_unit->currentIndex() == 1)
     {
         return ui->invest_period->text().toShort()/12.0 ;
     }
@@ -205,37 +204,28 @@ float MainWindow::automatic_investment_plan_period_trim(QString automatic_invest
     }
 }
 
-unsigned char MainWindow::count_mode_trim(QString count_mode)
-{
-    if (count_mode == "one time single interest"){return 1;}
-    else if (count_mode == "one time compound interest"){return 2;}
-    else if (count_mode == "automatic investment plan single interest"){return 3;}
-    else if (count_mode == "automatic investment plan compound interest"){return 4;}
-    return 0;
-}
-
 //the part of the function of count 计算公式部分
-float MainWindow::data_count(unsigned char count_mode, float present_value, float interest_rate, float invest_period,
+float MainWindow::data_count(int count_mode, float present_value, float interest_rate, float invest_period,
                              float automatic_investment_plan_value, float automatic_investment_plan_period )
 {
     float final_value=0 , temp = 0 ;
     switch ( count_mode )
     {
-    case 1 :
+    case 0 :
         final_value = present_value * (1.0 + interest_rate * invest_period ) ;
         return final_value ;
         break ;
-    case 2 :
+    case 1 :
         final_value = present_value * pow( ( 1.0 + interest_rate ) , invest_period ) ;
         return final_value ;
         break ;
-    case 3 :
+    case 2 :
         final_value = automatic_investment_plan_value * ( 1.0 * automatic_investment_plan_period + interest_rate *
                                                           automatic_investment_plan_period *
                                                           ( automatic_investment_plan_period + 1.0 ) / 2.0 ) ;
         return final_value ;
         break ;
-    case 4 :
+    case 3 :
         for ( ;automatic_investment_plan_period>0 ;automatic_investment_plan_period-- )
         {
             temp = automatic_investment_plan_value * pow ( ( 1.0 + interest_rate ) , automatic_investment_plan_period ) ;
